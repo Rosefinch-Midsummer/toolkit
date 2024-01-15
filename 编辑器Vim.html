@@ -174,7 +174,688 @@
                 <div id="content" class="content">
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
-<h1 id="editors-vim"><a class="header" href="#editors-vim">Editors (Vim)</a></h1>
+<h1 id="编辑器-vim"><a class="header" href="#编辑器-vim">编辑器 (Vim)</a></h1>
+<p><a href="https://missing-semester-cn.github.io/2020/editors/">编辑器 (Vim)来源地址</a></p>
+<p>写作和写代码其实是两项非常不同的活动。当我们编程的时候，会经常在文件间进行切换、阅读、浏览和修改代码，而不是连续编写一大段的文字。因此代码编辑器和文本编辑器是很不同的两种工具（例如微软的 Word 与 Visual Studio Code）。</p>
+<p>作为程序员，我们大部分时间都花在代码编辑上，所以花点时间掌握某个适合自己的编辑器是非常值得的。通常学习使用一个新的编辑器包含以下步骤：</p>
+<ul>
+<li>阅读教程（比如这节课以及我们为您提供的资源）</li>
+<li>坚持使用它来完成你所有的编辑工作（即使一开始这会让你的工作效率降低）</li>
+<li>随时查阅：如果某个操作看起来像是有更方便的实现方法，一般情况下真的会有</li>
+</ul>
+<p>如果您能够遵循上述步骤，并且坚持使用新的编辑器完成您所有的文本编辑任务，那么学习一个复杂的代码编辑器的过程一般是这样的：头两个小时，您会学习到编辑器的基本操作，例如打开和编辑文件、保存与退出、浏览缓冲区。当学习时间累计达到20个小时之后，您使用新编辑器的效率应该已经和使用老编辑器一样快。在此之后，其益处开始显现：有了足够的知识和肌肉记忆后，使用新编辑器将大大节省你的时间。而现代文本编辑器都是些复杂且强大的工具，永远有新东西可学：学的越多，效率越高。</p>
+<ul>
+<li><a href="#%E8%AF%A5%E5%AD%A6%E5%93%AA%E4%B8%AA%E7%BC%96%E8%BE%91%E5%99%A8">该学哪个编辑器？</a>
+<ul>
+<li><a href="#vim">Vim</a></li>
+</ul>
+</li>
+<li><a href="#vim-%E7%9A%84%E5%93%B2%E5%AD%A6">Vim 的哲学</a></li>
+<li><a href="#%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F">编辑模式</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C">基本操作</a>
+<ul>
+<li><a href="#%E6%8F%92%E5%85%A5%E6%96%87%E6%9C%AC">插入文本</a></li>
+<li><a href="#%E7%BC%93%E5%AD%98-%E6%A0%87%E7%AD%BE%E9%A1%B5-%E7%AA%97%E5%8F%A3">缓存， 标签页， 窗口</a></li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E8%A1%8C">命令行</a></li>
+</ul>
+</li>
+<li><a href="#vim-%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%85%B6%E5%AE%9E%E6%98%AF%E4%B8%80%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">Vim 的接口其实是一种编程语言</a>
+<ul>
+<li><a href="#%E7%A7%BB%E5%8A%A8">移动</a></li>
+<li><a href="#%E9%80%89%E6%8B%A9">选择</a></li>
+<li><a href="#%E7%BC%96%E8%BE%91">编辑</a></li>
+<li><a href="#%E8%AE%A1%E6%95%B0">计数</a></li>
+<li><a href="#%E4%BF%AE%E9%A5%B0%E8%AF%AD">修饰语</a></li>
+</ul>
+</li>
+<li><a href="#%E6%BC%94%E7%A4%BA">演示</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89-vim">自定义 Vim</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95-vim">扩展 Vim</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96%E7%A8%8B%E5%BA%8F%E7%9A%84-vim-%E6%A8%A1%E5%BC%8F">其他程序的 Vim 模式</a>
+<ul>
+<li><a href="#shell">Shell</a></li>
+<li><a href="#readline">Readline</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a></li>
+</ul>
+</li>
+<li><a href="#vim-%E8%BF%9B%E9%98%B6">Vim 进阶</a>
+<ul>
+<li><a href="#%E6%90%9C%E7%B4%A2%E5%92%8C%E6%9B%BF%E6%8D%A2">搜索和替换</a></li>
+<li><a href="#%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4">复制粘贴</a></li>
+<li><a href="#%E5%A4%9A%E7%AA%97%E5%8F%A3">多窗口</a></li>
+<li><a href="#%E5%AE%8F">宏</a></li>
+</ul>
+</li>
+<li><a href="#%E6%89%A9%E5%B1%95%E8%B5%84%E6%96%99">扩展资料</a></li>
+<li><a href="#%E8%AF%BE%E5%90%8E%E7%BB%83%E4%B9%A0">课后练习</a></li>
+<li><a href="#solution-%E7%BC%96%E8%BE%91%E5%99%A8-vim">Solution-编辑器 (Vim)</a></li>
+</ul>
+<h1 id="该学哪个编辑器"><a class="header" href="#该学哪个编辑器">该学哪个编辑器？</a></h1>
+<p>程序员们对自己正在使用的文本编辑器通常有着 <a href="https://zh.wikipedia.org/wiki/%E7%BC%96%E8%BE%91%E5%99%A8%E4%B9%8B%E6%88%98">非常强的执念</a>。</p>
+<p>现在最流行的编辑器是什么？<a href="https://insights.stackoverflow.com/survey/2019/#development-environments-and-tools">Stack Overflow 的调查</a>（这个调查可能并不如我们想象的那样客观，因为 Stack Overflow 的用户并不能代表所有程序员）显示，<a href="https://code.visualstudio.com/">Visual Studio Code</a> 是目前最流行的代码编辑器。而 <a href="https://www.vim.org/">Vim</a> 则是最流行的基于命令行的编辑器。</p>
+<h2 id="vim"><a class="header" href="#vim">Vim</a></h2>
+<p>这门课的所有教员都使用 Vim 作为编辑器。Vim 有着悠久历史；它始于 1976 年的 Vi 编辑器，到现在还在 不断开发中。Vim 有很多聪明的设计思想，所以很多其他工具也支持 Vim 模式（比如，140 万人安装了 <a href="https://github.com/VSCodeVim/Vim">Vim emulation for VS code</a>）。即使你最后使用 其他编辑器，Vim 也值得学习。</p>
+<p>由于不可能在 50 分钟内教授 Vim 的所有功能，我们会专注于解释 Vim 的设计哲学，教你基础知识， 并展示一部分高级功能，然后给你掌握这个工具所需要的资源。</p>
+<h1 id="vim-的哲学"><a class="header" href="#vim-的哲学">Vim 的哲学</a></h1>
+<p>在编程的时候，你会把大量时间花在阅读/编辑而不是在写代码上。所以，Vim 是一个_多模态_编辑 器：它对于插入文字和操纵文字有不同的模式。Vim 是可编程的（可以使用 Vimscript 或者像 Python 一样的其他程序语言），Vim 的接口本身也是一种程序语言：键入操作（以及其助记名） 是命令，这些命令也是可组合的。Vim 避免了使用鼠标，因为那样太慢了；Vim 甚至避免用 上下左右键因为那样需要太多的手指移动。</p>
+<p>这样的设计哲学使得 Vim 成为了一个能跟上你思维速度的编辑器。</p>
+<h1 id="编辑模式"><a class="header" href="#编辑模式">编辑模式</a></h1>
+<p>Vim 的设计以大多数时间都花在阅读、浏览和进行少量编辑改动为基础，因此它具有多种操作模式：</p>
+<ul>
+<li><strong>正常模式</strong>：在文件中四处移动光标进行修改</li>
+<li><strong>插入模式</strong>：插入文本</li>
+<li><strong>替换模式</strong>：替换文本</li>
+<li><strong>可视化模式</strong>（一般，行，块）：选中文本块</li>
+<li><strong>命令模式</strong>：用于执行命令</li>
+</ul>
+<p>在不同的操作模式下，键盘敲击的含义也不同。比如，<code>x</code> 在插入模式会插入字母 <code>x</code>，但是在正常模式 会删除当前光标所在的字母，在可视模式下则会删除选中文块。</p>
+<p>在默认设置下，Vim 会在左下角显示当前的模式。Vim 启动时的默认模式是正常模式。通常你会把大部分 时间花在正常模式和插入模式。</p>
+<p>你可以按下 <code>&lt;ESC&gt;</code>（退出键）从任何其他模式返回正常模式。在正常模式，键入 <code>i</code> 进入插入 模式，<code>R</code> 进入替换模式，<code>v</code> 进入可视（一般）模式，<code>V</code> 进入可视（行）模式，<code>&lt;C-v&gt;</code> （Ctrl-V, 有时也写作 <code>^V</code>）进入可视（块）模式，<code>:</code> 进入命令模式。</p>
+<p>因为你会在使用 Vim 时大量使用 <code>&lt;ESC&gt;</code> 键，所以可以考虑把大小写锁定键重定义成 <code>&lt;ESC&gt;</code> 键（<a href="https://vim.fandom.com/wiki/Map_caps_lock_to_escape_in_macOS">MacOS 教程</a>）。</p>
+<h1 id="基本操作"><a class="header" href="#基本操作">基本操作</a></h1>
+<h2 id="插入文本"><a class="header" href="#插入文本">插入文本</a></h2>
+<p>在正常模式，键入 <code>i</code> 进入插入模式。现在 Vim 跟很多其他的编辑器一样，直到你键入 <code>&lt;ESC&gt;</code> 返回正常模式。你只需要掌握这一点和上面介绍的所有基础知识就可以使用 Vim 来编辑文件了 （虽然如果你一直停留在插入模式内不一定高效）。</p>
+<h2 id="缓存-标签页-窗口"><a class="header" href="#缓存-标签页-窗口">缓存， 标签页， 窗口</a></h2>
+<p>Vim 会维护一系列打开的文件，称为“缓存”。一个 Vim 会话包含一系列标签页，每个标签页包含 一系列窗口（分隔面板）。每个窗口显示一个缓存。跟网页浏览器等其他你熟悉的程序不一样的是， 缓存和窗口不是一一对应的关系；窗口只是视角。一个缓存可以在多个窗口打开，甚至在同一个标签页内的多个窗口打开。这个功能其实很好用，比如在查看同一个文件的不同部分的时候。</p>
+<p>Vim 默认打开一个标签页，这个标签也包含一个窗口。</p>
+<h2 id="命令行"><a class="header" href="#命令行">命令行</a></h2>
+<p>在正常模式下键入 <code>:</code> 进入命令行模式。 在键入 <code>:</code> 后，你的光标会立即跳到屏幕下方的命令行。 这个模式有很多功能，包括打开，保存，关闭文件，以及 <a href="https://twitter.com/iamdevloper/status/435555976687923200">退出 Vim</a>。</p>
+<ul>
+<li><code>:q</code> 退出（关闭窗口）</li>
+<li><code>:w</code> 保存（写）</li>
+<li><code>:wq</code> 保存然后退出</li>
+<li><code>:e {文件名}</code> 打开要编辑的文件</li>
+<li><code>:ls</code> 显示打开的缓存</li>
+<li><code>:help {标题}</code> 打开帮助文档
+<ul>
+<li><code>:help :w</code> 打开 <code>:w</code> 命令的帮助文档</li>
+<li><code>:help w</code> 打开 <code>w</code> 移动的帮助文档</li>
+</ul>
+</li>
+</ul>
+<h1 id="vim-的接口其实是一种编程语言"><a class="header" href="#vim-的接口其实是一种编程语言">Vim 的接口其实是一种编程语言</a></h1>
+<p>Vim 最重要的设计思想是 Vim 的界面本身是一种程序语言。键入操作（以及他们的助记名） 本身是命令，这些命令可以组合使用。这使得移动和编辑更加高效，特别是一旦形成肌肉记忆。</p>
+<h2 id="移动"><a class="header" href="#移动">移动</a></h2>
+<p>多数时候你会在正常模式下，使用移动命令在缓存中导航。在 Vim 里面移动也被称为 “名词”， 因为它们指向文字块。</p>
+<ul>
+<li>基本移动: <code>hjkl</code> （左， 下， 上， 右）</li>
+<li>词： <code>w</code> （下一个词）， <code>b</code> （词初）， <code>e</code> （词尾）</li>
+<li>行： <code>0</code> （行初）， <code>^</code> （第一个非空格字符）， <code>$</code> （行尾）</li>
+<li>屏幕： <code>H</code> （屏幕首行）， <code>M</code> （屏幕中间）， <code>L</code> （屏幕底部）</li>
+<li>翻页： <code>Ctrl-u</code> （上翻）， <code>Ctrl-d</code> （下翻）</li>
+<li>文件： <code>gg</code> （文件头）， <code>G</code> （文件尾）</li>
+<li>行数： <code>:{行数}&lt;CR&gt;</code> 或者 <code>{行数}G</code> ({行数}为行数)</li>
+<li>杂项： <code>%</code> （找到配对，比如括号或者 /* */ 之类的注释对）</li>
+<li>查找： <code>f{字符}</code>， <code>t{字符}</code>， <code>F{字符}</code>， <code>T{字符}</code>
+<ul>
+<li>查找/到 向前/向后 在本行的{字符}</li>
+<li><code>,</code> / <code>;</code> 用于导航匹配</li>
+</ul>
+</li>
+<li>搜索: <code>/{正则表达式}</code>, <code>n</code> / <code>N</code> 用于导航匹配</li>
+</ul>
+<h2 id="选择"><a class="header" href="#选择">选择</a></h2>
+<p>可视化模式:</p>
+<ul>
+<li>可视化：<code>v</code></li>
+<li>可视化行： <code>V</code></li>
+<li>可视化块：<code>Ctrl+v</code></li>
+</ul>
+<p>可以用移动命令来选中。</p>
+<h2 id="编辑"><a class="header" href="#编辑">编辑</a></h2>
+<p>所有你需要用鼠标做的事， 你现在都可以用键盘：采用编辑命令和移动命令的组合来完成。 这就是 Vim 的界面开始看起来像一个程序语言的时候。Vim 的编辑命令也被称为 “动词”， 因为动词可以施动于名词。</p>
+<ul>
+<li><code>i</code> 进入插入模式
+<ul>
+<li>但是对于操纵/编辑文本，不单想用退格键完成</li>
+</ul>
+</li>
+<li><code>O</code> / <code>o</code> 在之上/之下插入行</li>
+<li><code>d{移动命令}</code> 删除 {移动命令}
+<ul>
+<li>例如，<code>dw</code> 删除词, <code>d$</code> 删除到行尾, <code>d0</code> 删除到行头。</li>
+</ul>
+</li>
+<li><code>c{移动命令}</code> 改变 {移动命令}
+<ul>
+<li>例如，<code>cw</code> 改变词</li>
+<li>比如 <code>d{移动命令}</code> 再 <code>i</code></li>
+</ul>
+</li>
+<li><code>x</code> 删除字符（等同于 <code>dl</code>）</li>
+<li><code>s</code> 替换字符（等同于 <code>xi</code>）</li>
+<li>可视化模式 + 操作
+<ul>
+<li>选中文字, <code>d</code> 删除 或者 <code>c</code> 改变</li>
+</ul>
+</li>
+<li><code>u</code> 撤销, <code>&lt;C-r&gt;</code> 重做</li>
+<li><code>y</code> 复制 / “yank” （其他一些命令比如 <code>d</code> 也会复制）</li>
+<li><code>p</code> 粘贴</li>
+<li>更多值得学习的: 比如 <code>~</code> 改变字符的大小写</li>
+</ul>
+<h2 id="计数"><a class="header" href="#计数">计数</a></h2>
+<p>你可以用一个计数来结合“名词”和“动词”，这会执行指定操作若干次。</p>
+<ul>
+<li><code>3w</code> 向后移动三个词</li>
+<li><code>5j</code> 向下移动5行</li>
+<li><code>7dw</code> 删除7个词</li>
+</ul>
+<h2 id="修饰语"><a class="header" href="#修饰语">修饰语</a></h2>
+<p>你可以用修饰语改变“名词”的意义。修饰语有 <code>i</code>，表示“内部”或者“在内”，和 <code>a</code>， 表示“周围”。</p>
+<ul>
+<li><code>ci(</code> 改变当前括号内的内容</li>
+<li><code>ci[</code> 改变当前方括号内的内容</li>
+<li><code>da'</code> 删除一个单引号字符串， 包括周围的单引号</li>
+</ul>
+<h1 id="演示"><a class="header" href="#演示">演示</a></h1>
+<p>这里是一个有问题的 <a href="https://en.wikipedia.org/wiki/Fizz_buzz">fizz buzz</a> 实现：</p>
+<pre><code class="language-python">def fizz_buzz(limit):
+    for i in range(limit):
+        if i % 3 == 0:
+            print('fizz')
+        if i % 5 == 0:
+            print('fizz')
+        if i % 3 and i % 5:
+            print(i)
+
+def main():
+    fizz_buzz(10)
+</code></pre>
+<p>我们会修复以下问题：</p>
+<ul>
+<li>
+<p>主函数没有被调用</p>
+</li>
+<li>
+<p>从 0 而不是 1 开始</p>
+</li>
+<li>
+<p>在 15 的整数倍的时候在不同行打印 “fizz” 和 “buzz”</p>
+</li>
+<li>
+<p>在 5 的整数倍的时候打印 “fizz”</p>
+</li>
+<li>
+<p>采用硬编码的参数 10 而不是从命令控制行读取参数</p>
+</li>
+<li>
+<p>主函数没有被调用</p>
+<ul>
+<li><code>G</code> 文件尾</li>
+<li><code>o</code> 向下打开一个新行</li>
+<li>输入 “if <strong>name</strong> …”</li>
+</ul>
+</li>
+<li>
+<p>从 0 而不是 1 开始</p>
+<ul>
+<li>搜索 <code>/range</code></li>
+<li><code>ww</code> 向后移动两个词</li>
+<li><code>i</code> 插入文字， “1, “</li>
+<li><code>ea</code> 在 limit 后插入， “+1”</li>
+</ul>
+</li>
+<li>
+<p>在新的一行 “fizzbuzz”</p>
+<ul>
+<li><code>jj$i</code> 插入文字到行尾</li>
+<li>加入 “, end=’’”</li>
+<li><code>jj.</code> 重复第二个打印</li>
+<li><code>jjo</code> 在 if 打开一行</li>
+<li>加入 “else: print()” ❗ 🔄</li>
+</ul>
+</li>
+<li>
+<p>fizz fizz</p>
+<ul>
+<li><code>ci'</code> 变到 fizz</li>
+</ul>
+</li>
+<li>
+<p>命令控制行参数</p>
+<ul>
+<li><code>ggO</code> 向上打开</li>
+<li>“import sys” </li>
+<li><code>/10</code></li>
+<li><code>ci(</code> to “int(sys.argv[1])” </li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">import sys
+def fizz_buzz(limit):
+    for i in range(limit):
+        if i % 3 == 0:
+            print('fizz')
+        if i % 5 == 0:
+            print('buzz')
+        if i % 3 and i % 5:
+            print(i)
+
+def main():
+    fizz_buzz(int(sys.argv[1]))
+
+if __name__ == '__main__':
+	main()
+</code></pre>
+<p>展示详情请观看课程视频。比较上面用 Vim 的操作和你可能使用其他程序的操作。 值得一提的是 Vim 需要很少的键盘操作，允许你编辑的速度跟上你思维的速度。</p>
+<h1 id="自定义-vim"><a class="header" href="#自定义-vim">自定义 Vim</a></h1>
+<p>Vim 由一个位于 <code>~/.vimrc</code> 的文本配置文件（包含 Vim 脚本命令）。你可能会启用很多基本 设置。</p>
+<p>我们提供一个文档详细的基本设置，你可以用它当作你的初始设置。我们推荐使用这个设置因为 它修复了一些 Vim 默认设置奇怪行为。 <strong>在<a href="https://missing-semester-cn.github.io/2020/files/vimrc">这儿</a> 下载我们的设置，然后将它保存成 <code>~/.vimrc</code>.</strong></p>
+<p>Vim 能够被重度自定义，花时间探索自定义选项是值得的。你可以参考其他人的在 GitHub 上共享的设置文件，比如，你的授课人的 Vim 设置 (<a href="https://github.com/anishathalye/dotfiles/blob/master/vimrc">Anish</a>, <a href="https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.vim">Jon</a> (uses <a href="https://neovim.io/">neovim</a>), <a href="https://github.com/JJGO/dotfiles/blob/master/vim/.vimrc">Jose</a>)。 有很多好的博客文章也聊到了这个话题。尽量不要复制粘贴别人的整个设置文件， 而是阅读和理解它，然后采用对你有用的部分。</p>
+<h1 id="扩展-vim"><a class="header" href="#扩展-vim">扩展 Vim</a></h1>
+<p>Vim 有很多扩展插件。跟很多互联网上已经过时的建议相反，你_不_需要在 Vim 使用一个插件 管理器（从 Vim 8.0 开始）。你可以使用内置的插件管理系统。只需要创建一个 <code>~/.vim/pack/vendor/start/</code> 的文件夹，然后把插件放到这里（比如通过 <code>git clone</code>）。</p>
+<p>以下是一些我们最爱的插件：</p>
+<ul>
+<li><a href="https://github.com/ctrlpvim/ctrlp.vim">ctrlp.vim</a>: 模糊文件查找</li>
+<li><a href="https://github.com/mileszs/ack.vim">ack.vim</a>: 代码搜索</li>
+<li><a href="https://github.com/scrooloose/nerdtree">nerdtree</a>: 文件浏览器</li>
+<li><a href="https://github.com/easymotion/vim-easymotion">vim-easymotion</a>: 魔术操作</li>
+</ul>
+<p>我们尽量避免在这里提供一份冗长的插件列表。你可以查看讲师们的开源的配置文件 (<a href="https://github.com/anishathalye/dotfiles">Anish</a>, <a href="https://github.com/jonhoo/configs">Jon</a>, <a href="https://github.com/JJGO/dotfiles">Jose</a>) 来看看我们使用的其他插件。 浏览 <a href="https://vimawesome.com/">Vim Awesome</a> 来了解一些很棒的插件。 这个话题也有很多博客文章：搜索 “best Vim plugins”。</p>
+<h1 id="其他程序的-vim-模式"><a class="header" href="#其他程序的-vim-模式">其他程序的 Vim 模式</a></h1>
+<p>很多工具提供了 Vim 模式。这些 Vim 模式的质量参差不齐；取决于具体工具，有的提供了 很多酷炫的 Vim 功能，但是大多数对基本功能支持的很好。</p>
+<h2 id="shell"><a class="header" href="#shell">Shell</a></h2>
+<p>如果你是一个 Bash 用户，用 <code>set -o vi</code>。如果你用 Zsh：<code>bindkey -v</code>。Fish 用 <code>fish_vi_key_bindings</code>。另外，不管利用什么 shell，你可以 <code>export EDITOR=vim</code>。 这是一个用来决定当一个程序需要启动编辑时启动哪个的环境变量。 例如，<code>git</code> 会使用这个编辑器来编辑 commit 信息。</p>
+<h2 id="readline"><a class="header" href="#readline">Readline</a></h2>
+<p>很多程序使用 <a href="https://tiswww.case.edu/php/chet/readline/rltop.html">GNU Readline</a> 库来作为它们的命令控制行界面。Readline 也支持基本的 Vim 模式， 可以通过在 <code>~/.inputrc</code> 添加如下行开启：</p>
+<pre><code>set editing-mode vi
+</code></pre>
+<p>比如，在这个设置下，Python REPL 会支持 Vim 快捷键。</p>
+<h2 id="其他"><a class="header" href="#其他">其他</a></h2>
+<p>甚至有 Vim 的网页浏览快捷键 <a href="http://vim.wikia.com/wiki/Vim_key_bindings_for_web_browsers">browsers</a>, 受欢迎的有 用于 Google Chrome 的 <a href="https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en">Vimium</a> 和用于 Firefox 的 <a href="https://github.com/tridactyl/tridactyl">Tridactyl</a>。 你甚至可以在 <a href="https://github.com/lambdalisue/jupyter-vim-binding">Jupyter notebooks</a> 中用 Vim 快捷键。 <a href="https://reversed.top/2016-08-13/big-list-of-vim-like-software">这个列表</a> 中列举了支持类 vim 键位绑定的软件。</p>
+<h1 id="vim-进阶"><a class="header" href="#vim-进阶">Vim 进阶</a></h1>
+<p>这里我们提供了一些展示这个编辑器能力的例子。我们无法把所有的这样的事情都教给你，但是你 可以在使用中学习。一个好的对策是: 当你在使用你的编辑器的时候感觉 “一定有更好的方法来做这个”， 那么很可能真的有：上网搜寻一下。</p>
+<h2 id="搜索和替换"><a class="header" href="#搜索和替换">搜索和替换</a></h2>
+<p><code>:s</code> （替换）命令（<a href="http://vim.wikia.com/wiki/Search_and_replace">文档</a>）。</p>
+<ul>
+<li><code>%s/foo/bar/g</code>
+<ul>
+<li>在整个文件中将 foo 全局替换成 bar</li>
+</ul>
+</li>
+<li><code>%s/\[.*\](\(.*\))/\1/g</code>
+<ul>
+<li>将有命名的 Markdown 链接替换成简单 URLs</li>
+</ul>
+</li>
+</ul>
+<h2 id="复制粘贴"><a class="header" href="#复制粘贴">复制粘贴</a></h2>
+<p>vim中的复制和粘贴命令分别是y和p，在不需要和系统交互剪贴板数据时还好，一旦要复制外部数据到vim中或者将vim中的数据复制到外部，这两个命令就无效了，只能用鼠标选中再右键复制粘贴。虽然和windows下的Ctrl C、Ctrl V不同，但vim可以通过配置实现和系统剪贴板的“沟通”。
+需要注意的是Ctrl y和Ctrl p在 vim 中有特殊含义，使用以下设置后会覆盖默认设置。</p>
+<p>前提
+开始前需要先查看vim是否已经支持clipboard功能，使用vim --version | grep clipboard命令查看，有+clipboard说已经支持clipboard功能。</p>
+<pre><code>-clipboard         +keymap            +printer           +vertsplit
++eval              -mouse_jsbterm     -sun_workshop      -xterm_clipboard
+</code></pre>
+<p>如果其前为-号，执行sudo apt install vim-gtk安装vim-gtk即可（或者安装gvim，非debian系的系统不是用apt命令，根据系统变动就行，都差不多），安装完成后再执行vim --version | grep clipboard此时应该已经支持clipboard功能。</p>
+<p>配置vim</p>
+<p>此时如果在vim外复制了文本，要粘贴到打开的vim文件内，只需在normal模式下（如果不知道当前在哪个模式就先按一次ESC键）执行&quot;*p，注意是三个键连续输入，由于要输入双引号和星号，因此需要先按下Shift键，再分别按下&quot; *（过程中Shift不要放下），最后按下p（小写，此时不要按Shift），如果没问题应该可以将系统剪贴板数据粘贴到vim中；</p>
+<p>类似的，要将vim中的数据复制到vim外，需要回到normal模式先按v进入visual模式，移动光标选中目标文本后，在visua模式下执行&quot; + y即可将vim数据复制到系统剪贴板，在vim外执行Ctrl V即可完成数据粘贴。</p>
+<p>vim支持自定义快捷键，使用vim打开~/.vimrc文件这是当前用户的vim配置文件，vim会读取配置文件中的内容完成相应的配置，在这个配置文件中添加（中文前的“号是注释）</p>
+<pre><code>vnoremap &lt;C-y&gt; &quot;+y   &quot;支持在Visual模式下，通过C-y复制到系统剪切板
+nnoremap &lt;C-p&gt; &quot;*p   &quot;支持在normal模式下，通过C-p粘贴系统剪切板
+</code></pre>
+<p>添加完成后按ESC回到normal模式输入:wq保存并退出，此后就可以像Ctrl C、Ctrl V那样愉快地使用Ctrl y和Ctrl p进行复制粘贴了。</p>
+<h2 id="多窗口"><a class="header" href="#多窗口">多窗口</a></h2>
+<ul>
+<li>用 <code>:sp</code> / <code>:vsp</code> 来分割窗口</li>
+<li>同一个缓存可以在多个窗口中显示。</li>
+</ul>
+<p><a href="https://zhuanlan.zhihu.com/p/337157587">来源</a></p>
+<p>Vim分屏功能是通过分割窗口来实现的，这是提高工作效率的一大利器。无论我们想同时显示两个文件，或者同时显示一个文件的两个不同的位置，又或者并排比较两个文件，等等，这些都能通过分屏来实现，这样子很方便代码的比对和复制粘贴</p>
+<p><strong>水平方向分屏打开新文件</strong></p>
+<p>:sp linuxmi.py</p>
+<p>或者</p>
+<p>:split linuxmi.py</p>
+<p>这个命令把窗口横向切分为两个窗口，并把光标置于上面的窗口中。</p>
+<p><strong>垂直方向分屏打开新文件</strong></p>
+<p>:vsp linux.py</p>
+<p>:vsplit linux.py</p>
+<p>:sview linux.py -&gt;只读分屏打开文件</p>
+<p>另外，要打开窗口编辑一个新的文件时，可以用以下命令：</p>
+<p>:new</p>
+<p><strong>从命令行直接打开多个文件且是分屏</strong></p>
+<p>vim -On file1, file2 ... -&gt;垂直分屏</p>
+<p>vim -on file1, file2 ... -&gt;水平分屏</p>
+<p>linuxmi@linuxmi:~/<a href="https://link.zhihu.com/?target=http%3A//www.linuxmi.com">http://www.linuxmi.com</a> vim -O3 linux.py linuxmi.py linuxmi.cpp</p>
+<p><img src="https://pic3.zhimg.com/80/v2-2fbea6832d96ea4ca18d8c8fc6aa76a2_1440w.webp" alt="" /></p>
+<p>注：-O垂直分屏，-o水平分屏，n表示分几个屏</p>
+<p><strong>实时调整当前窗口的宽度</strong><br />
+ctrl-w &gt; //向右加宽，默认值为1<br />
+ctrl-w N &gt; //向右加宽宽度N<br />
+ctrl-w &lt; // 同理</p>
+<p><strong>横屏/竖屏分屏打开当前文件</strong></p>
+<p>ctrl+w s<br />
+ctrl+w v</p>
+<p><strong>切换分屏</strong></p>
+<p>ctrl+w h,j,k,l<br />
+ctrl+w 上下左右键</p>
+<p>crtl+w进行分屏窗口的切换 按完以后再按一个w</p>
+<p>crtl+w进行分屏窗口的切换 按完以后再按一个r 互换窗口</p>
+<p>crtl+w进行分屏窗口的切换 按完以后再按一个c 关闭窗口</p>
+<p><strong>关闭分屏</strong></p>
+<p>关闭窗口有以下几个个命令：</p>
+<p>ctrl+W c 关闭当前窗口</p>
+<p>ctrl+w q 关闭当前窗口，若只有一个分屏且退出vim</p>
+<p>:only 仅保留当前分屏<br />
+:hide 关闭当前分屏</p>
+<p><strong>调整分屏的大小（宽度与高度）</strong></p>
+<p>ctrl+w = 所有分屏都统一高度<br />
+ctrl+w + 增加高度，默认值为1<br />
+ctrl+w - 减少高度<br />
+10 ctrl+w + 增加10行高度<br />
+ctrl-w N + //当前屏高度加N</p>
+<p>使用指定当前屏的调整高度<br />
+: resize N</p>
+<p>示例：</p>
+<p>:resize 30</p>
+<p><strong>移动分屏</strong></p>
+<p>ctrl+W H,J,K,L</p>
+<p><strong>将屏幕移动到最顶端</strong><br />
+ctrl-w + K</p>
+<p><strong>将屏幕移动到最低端</strong><br />
+ctrl-w + J</p>
+<p><strong>将屏幕移动到最左边</strong><br />
+ctrl-w + H</p>
+<p><strong>将屏幕移动到最右边</strong><br />
+ctrl-w + L</p>
+<h2 id="宏"><a class="header" href="#宏">宏</a></h2>
+<ul>
+<li><code>q{字符}</code> 来开始在寄存器<code>{字符}</code>中录制宏</li>
+<li><code>q</code>停止录制</li>
+<li><code>@{字符}</code> 重放宏</li>
+<li>宏的执行遇错误会停止</li>
+<li><code>{计数}@{字符}</code>执行一个宏{计数}次</li>
+<li>宏可以递归
+<ul>
+<li>首先用<code>q{字符}q</code>清除宏</li>
+<li>录制该宏，用 <code>@{字符}</code> 来递归调用该宏 （在录制完成之前不会有任何操作）</li>
+</ul>
+</li>
+<li>例子：将 xml 转成 json (<a href="https://missing-semester-cn.github.io/2020/files/example-data.xml">file</a>)
+<ul>
+<li>一个有 “name” / “email” 键对象的数组</li>
+<li>用一个 Python 程序？</li>
+<li>用 sed / 正则表达式
+<ul>
+<li><code>g/people/d</code></li>
+<li><code>%s/&lt;person&gt;/{/g</code></li>
+<li><code>%s/&lt;name&gt;\(.*\)&lt;\/name&gt;/&quot;name&quot;: &quot;\1&quot;,/g</code></li>
+<li>…</li>
+</ul>
+</li>
+<li>Vim 命令 / 宏
+<ul>
+<li><code>ggdd</code>, <code>Gdd</code> 删除第一行和最后一行</li>
+<li>格式化最后一个元素的宏 （寄存器 <code>e</code>）
+<ul>
+<li>跳转到有 <code>&lt;name&gt;</code> 的行</li>
+<li><code>qe^r&quot;f&gt;s&quot;: &quot;&lt;ESC&gt;f&lt;C&quot;&lt;ESC&gt;q</code></li>
+</ul>
+</li>
+<li>格式化一个的宏
+<ul>
+<li>跳转到有 <code>&lt;person&gt;</code> 的行</li>
+<li><code>qpS{&lt;ESC&gt;j@eA,&lt;ESC&gt;j@ejS},&lt;ESC&gt;q</code></li>
+</ul>
+</li>
+<li>格式化一个标签然后转到另外一个的宏
+<ul>
+<li>跳转到有 <code>&lt;person&gt;</code> 的行</li>
+<li><code>qq@pjq</code></li>
+</ul>
+</li>
+<li>执行宏到文件尾
+<ul>
+<li><code>999@q</code></li>
+</ul>
+</li>
+<li>手动移除最后的 <code>,</code> 然后加上 <code>[</code> 和 <code>]</code> 分隔符</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="扩展资料"><a class="header" href="#扩展资料">扩展资料</a></h1>
+<ul>
+<li><code>vimtutor</code> 是一个 Vim 安装时自带的教程</li>
+<li><a href="https://vim-adventures.com/">Vim Adventures</a> 是一个学习使用 Vim 的游戏</li>
+<li><a href="http://vim.wikia.com/wiki/Vim_Tips_Wiki">Vim Tips Wiki</a> </li>
+<li><a href="https://vimways.org/2019/">Vim Advent Calendar</a> 有很多 Vim 小技巧</li>
+<li><a href="http://www.vimgolf.com/">Vim Golf</a> 是用 Vim 的用户界面作为程序语言的 <a href="https://en.wikipedia.org/wiki/Code_golf">code golf</a></li>
+<li><a href="https://vi.stackexchange.com/">Vi/Vim Stack Exchange</a> </li>
+<li><a href="http://vimcasts.org/">Vim Screencasts</a></li>
+<li><a href="https://pragprog.com/titles/dnvim2/">Practical Vim</a>（书籍） </li>
+</ul>
+<h1 id="课后练习"><a class="header" href="#课后练习">课后练习</a></h1>
+<p><a href="https://missing-semester-cn.github.io/missing-notes-and-solutions/2020/solutions//editors-solution">习题解答</a></p>
+<ol>
+<li>完成 <code>vimtutor</code>。备注：它在一个 <a href="https://en.wikipedia.org/wiki/VT100">80x24</a>（80 列，24 行） 终端窗口看起来效果最好。</li>
+<li>下载我们提供的 <a href="https://missing-semester-cn.github.io/2020/files/vimrc">vimrc</a>，然后把它保存到 <code>~/.vimrc</code>。 通读这个注释详细的文件 （用 Vim!）， 然后观察 Vim 在这个新的设置下看起来和使用起来有哪些细微的区别。</li>
+<li>安装和配置一个插件： <a href="https://github.com/ctrlpvim/ctrlp.vim">ctrlp.vim</a>.
+<ol>
+<li>用 <code>mkdir -p ~/.vim/pack/vendor/start</code> 创建插件文件夹</li>
+<li>下载这个插件： <code>cd ~/.vim/pack/vendor/start; git clone https://github.com/ctrlpvim/ctrlp.vim</code></li>
+<li>阅读这个插件的 <a href="https://github.com/ctrlpvim/ctrlp.vim/blob/master/readme.md">文档</a>。 尝试用 CtrlP 来在一个工程文件夹里定位一个文件，打开 Vim, 然后用 Vim 命令控制行开始 <code>:CtrlP</code>.</li>
+<li>自定义 CtrlP：添加 <a href="https://github.com/ctrlpvim/ctrlp.vim/blob/master/readme.md#basic-options">configuration</a> 到你的 <code>~/.vimrc</code> 来用按 Ctrl-P 打开 CtrlP</li>
+</ol>
+</li>
+<li>练习使用 Vim, 在你自己的机器上重做 <a href="https://missing-semester-cn.github.io/2020/editors/#demo">演示</a>。</li>
+<li>下个月用 Vim 完成_所有的_文件编辑。每当不够高效的时候，或者你感觉 “一定有一个更好的方式”时， 尝试求助搜索引擎，很有可能有一个更好的方式。如果你遇到难题，可以来我们的答疑时间或者给我们发邮件。</li>
+<li>在其他工具中设置 Vim 快捷键 （见上面的操作指南）。</li>
+<li>进一步自定义你的 <code>~/.vimrc</code> 和安装更多插件。</li>
+<li>（高阶）用 Vim 宏将 XML 转换到 JSON (<a href="https://missing-semester-cn.github.io/2020/files/example-data.xml">例子文件</a>)。 尝试着先完全自己做，但是在你卡住的时候可以查看上面<a href="https://missing-semester-cn.github.io/2020/editors/#macros">宏</a> 章节。</li>
+</ol>
+<h1 id="solution-编辑器-vim"><a class="header" href="#solution-编辑器-vim">Solution-编辑器 (Vim)</a></h1>
+<ol>
+<li>
+<p>完成 vimtutor。 备注： 它在一个 80x24（80 列，24 行） 终端窗口看起来最好。</p>
+<pre><code>  vimtutor
+</code></pre>
+</li>
+<li>
+<p>下载我们的<a href="https://missing-semester-cn.github.io/2020/files/vimrc">vimrc</a>，然后把它保存到 <code>~/.vimrc</code>。 通读这个注释详细的文件 （用 Vim!）， 然后观察 Vim 在这个新的设置下看起来和使用起来有哪些细微的区别。</p>
+</li>
+<li>
+<p>安装和配置一个插件： <code>ctrlp.vim</code>.</p>
+<ol>
+<li>
+<p>用 <code>mkdir -p ~/.vim/pack/vendor/start</code> 创建插件文件夹</p>
+</li>
+<li>
+<p>下载这个插件： <code>cd ~/.vim/pack/vendor/start; git clone https://github.com/ctrlpvim/ctrlp.vim</code><br />
+下载后需要在~/.vimrc 中添加如下设置，参考<a href="http://ctrlpvim.github.io/ctrlp.vim/#installation">这里</a></p>
+<pre><code> set runtimepath^=~/.vim/pack/vendor/start/ctrlp.vim 
+</code></pre>
+</li>
+<li>
+<p>请阅读这个插件的<a href="https://github.com/ctrlpvim/ctrlp.vim/blob/master/readme.md">文档</a>。 尝试用 CtrlP 来在一个工程文件夹里定位一个文件， 打开 Vim, 然后用 Vim 命令控制行开始 :CtrlP.<img src="https://missing-semester-cn.github.io/missing-notes-and-solutions/2020/solutions/images/3/1.png" alt="1.png" /></p>
+</li>
+<li>
+<p>自定义 CtrlP： 添加 <a href="https://github.com/ctrlpvim/ctrlp.vim/blob/master/readme.md#basic-options">configuration</a> 到你的 ~/.vimrc 来用按 Ctrl-P 打开 CtrlP</p>
+<pre><code> let g:ctrlp_map ='&lt;c-p&gt;' 
+ let g:ctrlp_cmd = 'CtrlP'
+ let g:ctrlp_working_path_mode = 'ra' #设置默认路径为当前路径
+</code></pre>
+<p><img src="https://missing-semester-cn.github.io/missing-notes-and-solutions/2020/solutions/images/3/2.png" alt="1.png" /></p>
+</li>
+</ol>
+</li>
+<li>
+<p>练习使用 Vim, 在你自己的机器上重做演示。</p>
+</li>
+<li>
+<p>下个月用 Vim 完成_所有_的文件编辑。每当不够高效的时候，或者你感觉 “一定有一个更好的方式”， 尝试求助搜索引擎，很有可能有一个更好的方式。如果你遇到难题， 来我们的答疑时间或者给我们发邮件。</p>
+</li>
+<li>
+<p>在你的其他工具中设置 Vim 快捷键 （见上面的操作指南）。</p>
+</li>
+<li>
+<p>进一步自定义你的 ~/.vimrc 和安装更多插件。 安装插件最简单的方法是使用 Vim 的包管理器，即使用 vim-plug 安装插件：</p>
+<ol>
+<li>
+<p>安装 vim-plug</p>
+<pre><code>  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+</code></pre>
+</li>
+<li>
+<p>修改 ~/.vimrc</p>
+<pre><code> call plug#begin()
+ Plug 'preservim/NERDTree' #需要安装的插件 NERDTree
+ Plug 'wikitopian/hardmode'  #安装 hardmode
+ ..... # 更多插件
+ call plug#end()
+</code></pre>
+</li>
+<li>
+<p>在 vim 命令行中执行 <code>:PlugInstall</code><img src="https://missing-semester-cn.github.io/missing-notes-and-solutions/2020/solutions//images/3/3.png" alt="1.png" /></p>
+</li>
+</ol>
+</li>
+<li>
+<p>(高阶)用 Vim 宏将 XML 转换到 JSON (<a href="https://missing-semester-cn.github.io/2020/files/example-data.xml">例子文件</a>)。 尝试着先完全自己做，但是在你卡住的时候可以查看上面 <a href="https://missing-semester-cn.github.io/2020/editors/#macros">宏</a> 章节。</p>
+<p>可以先查看<a href="https://missing-semester-cn.github.io/missing-notes-and-solutions/2020/solutions/demoCode/3/example-data.json">转化后的JSON文件</a>，了解最终的转换效果。</p>
+<pre><code>vim example-data.xml
+</code></pre>
+<p>在<code>vim</code>编辑页面中执行以下步骤：</p>
+<ol>
+<li>
+<p>删除首尾两行</p>
+<ul>
+<li><code>Gdd</code>：跳转到最后一行，并删除该行</li>
+<li><code>ggdd</code>： 跳转到第一行，并删除该行</li>
+</ul>
+</li>
+<li>
+<p>录制寄存器<code>e</code>，实现对<code>&lt;name&gt;</code>标签的处理</p>
+<ul>
+<li>
+<p><code>/&lt;name&gt;</code>，再键入<code>Enter</code>，然后键入<code>N</code>：查找<code>&lt;name&gt;</code>并跳转到文件的最后一个<code>&lt;name&gt;</code></p>
+</li>
+<li>
+<p>接下来，录制宏（即寄存器<code>e</code>）：</p>
+</li>
+<li>
+<p><code>qe</code>：即将录制名为<code>e</code>的宏</p>
+</li>
+<li>
+<p><code>^r&quot;</code>：<code>^</code>跳转到当前行的首个非空字符，即<code>&lt;name&gt;</code>的<code>&lt;</code>，<code>r&quot;</code>将<code>&lt;</code>替换为<code>&quot;</code></p>
+</li>
+<li>
+<p><code>f&gt;s&quot;: &quot;</code>：<code>f&gt;</code>查找<code>&gt;</code>，此处即匹配刚才的<code>&lt;name&gt;</code>的<code>&gt;</code>；<code>s&quot;</code>将<code>&gt;</code>替换为<code>&quot;: &quot;</code></p>
+</li>
+<li>
+<p><code>&lt;Esc&gt;</code>：回到正常模式</p>
+</li>
+<li>
+<p><code>f&lt;C&quot;</code>：查找下一个<code>&lt;</code>，由于xml文件的特征，此时匹配到的是刚才修改的<code>&lt;name&gt;</code>对应的<code>&lt;/name&gt;</code>的<code>&lt;</code>；然后，将当前位置到本行末尾的内容删除，同时插入<code>&quot;</code></p>
+</li>
+<li>
+<p><code>&lt;Esc&gt;</code>：回到正常模式</p>
+</li>
+<li>
+<p><code>q</code>：停止录制，寄存器<code>e</code>完成</p>
+<ul>
+<li>寄存器<code>e</code>的效果示例：将<code>&lt;name&gt;Mike&lt;/name&gt;</code>修改为<code>&quot;name&quot;: &quot;Mike&quot;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>录制寄存器<code>p</code>，实现对<code>&lt;person&gt;</code>标签的处理</p>
+<ul>
+<li>
+<p><code>gg</code>：跳转到文件开头（本例中，正好处于一个<code>&lt;person&gt;</code>标签）</p>
+</li>
+<li>
+<p>接下来，录制宏（寄存器<code>p</code>）</p>
+</li>
+<li>
+<p><code>qp</code>：即将录制宏<code>p</code></p>
+</li>
+<li>
+<p><code>S{</code>：将当前行删除，并替换为<code>{</code></p>
+</li>
+<li>
+<p><code>&lt;Esc&gt;</code>：回到正常模式</p>
+</li>
+<li>
+<p><code>j@e</code>：移到下一行，并执行宏<code>e</code>（因为本例的xml文件中，<code>&lt;person&gt;</code>的下一行为<code>&lt;name&gt;</code>）</p>
+</li>
+<li>
+<p><code>A,</code>：在本行的末尾添加上<code>,</code></p>
+</li>
+<li>
+<p><code>&lt;Esc&gt;</code></p>
+</li>
+<li>
+<p><code>j@e</code>：移到下一行，并执行宏<code>e</code>（本例中，完成对<code>&lt;email&gt;</code>标签行的处理，其处理与<code>&lt;name&gt;</code>标签行的一致）</p>
+</li>
+<li>
+<p><code>jS},</code>：跳转到下一行，并删除整行，同时添加上<code>},</code>（本例中该行内容为：<code>&lt;/person&gt;</code>）</p>
+</li>
+<li>
+<p><code>&lt;Esc&gt;q</code>：回到正常模式，并停止录制，完成宏<code>p</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>录制寄存器<code>q</code>，实现从一个<code>&lt;person&gt;</code>标签到另一个<code>&lt;person&gt;</code>标签的跳转</p>
+<ul>
+<li><code>/&lt;person&gt;</code>：从第三步的位置开始查找下一个<code>&lt;person&gt;</code>标签</li>
+<li><code>qq</code>：开始录制宏<code>q</code></li>
+<li><code>@p</code>：执行宏<code>p</code>，可以将这一组<code>&lt;person&gt;</code>标签包含的内容修改为json格式</li>
+<li><code>jq</code>：移到下一行，并停止录制，完成宏<code>q</code>（此时，刚好处于下一个<code>&lt;person&gt;</code>标签行）</li>
+</ul>
+</li>
+<li>
+<p>执行宏<code>q</code>到文件尾</p>
+<ul>
+<li><code>999@q</code>：执行999次宏<code>q</code>（本文档总行数为1002行，执行999次能确保到达文件末尾）</li>
+</ul>
+</li>
+<li>
+<p>手动修改文件内容</p>
+<ul>
+<li>
+<p><code>gg</code></p>
+</li>
+<li>
+<p><code>O</code>：（大写的<code>o</code>）在开头插入如下内容</p>
+<pre><code>{
+&quot;people&quot;: {
+    &quot;person&quot;: [
+</code></pre>
+</li>
+<li>
+<p><code>&lt;Esc&gt;</code></p>
+</li>
+<li>
+<p><code>/&lt;email&gt;</code>：跳转到文件末尾唯一未处理的<code>&lt;email&gt;</code>标签行</p>
+</li>
+<li>
+<p><code>@e</code>：对该标签行进行处理</p>
+</li>
+<li>
+<p><code>jS}</code>：移到下一行，删除<code>&lt;/person&gt;</code>标签</p>
+</li>
+<li>
+<p><code>&lt;Esc&gt;</code></p>
+</li>
+<li>
+<p><code>o</code>：在文件末尾插入以下内容</p>
+<pre><code>    ]
+}
+}
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
 
                     </main>
 
